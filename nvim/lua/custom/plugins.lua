@@ -1,55 +1,180 @@
 local plugins = {
   -- UI
+  {
+    "Abizrh/beastie.nvim",
+    lazy = false, -- needed so the beastie can start at launch
+    opts = {
+      beasties = {
+        {
+          name = "cat",
+          frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
+        },
+        {
+          name = "love",
+          frames = { "❤️", "💛", "💚", "💙", "💜", "💓", "💘" }
+        },
+        {
+          name = "fairy",
+          frames = { "🧚", "🧚", "🧚", "🧚", "🧚", "🧚", "🧚" }
+        }
+      },
+      start_at_launch = true,
+      animation_speed = 180, -- ms
+      active_beastie = 1,
+    },
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    lazy = false, -- needed so the pomodoro can start at launch
+    dependencies = { "quentingruber/pomodoro.nvim" },
+    config = function()
+      require "custom.configs.lualine"
+    end,
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = function()
+      require "custom.configs.noice"
+    end
+  },
+  {
+    "folke/ts-comments.nvim",
+    opts = {},
+    lazy = false,
+    event = "VeryLazy",
+    enabled = vim.fn.has("nvim-0.10.0") == 1,
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    event = "VeryLazy",
+    opts = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+  },
   -- {
-  -- "folke/noice.nvim",
-  --   event = "VeryLazy",
+  --   "quentingruber/pomodoro.nvim",
+  --   lazy = false, -- needed so the pomodoro can start at launch
   --   opts = {
-  --   -- add any options here
+  --     start_at_launch = true,
+  --     work_duration = 25,
+  --     break_duration = 1,
+  --     snooze_duration = 1, -- The additionnal work time you get when you delay a break
   --   },
-  --   dependencies = {
-  --   -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --     "MunifTanjim/nui.nvim",
-  --     "rcarriga/nvim-notify",
-  --   },
-  --   config = function ()
-  --     require "custom.configs.noice"
-  --   end
   -- },
-  -- {
-  --   "nvimtools/none-ls.nvim",
-  --   event = "VeryLazy",
-  --   opts = function()
-  --     require "custom.configs.null-ls"
-  --   end,
-  -- },
+  -- Note taking
+  {
+    "nvim-neorg/neorg",
+    build = ":Neorg sync-parsers",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = true,
+    event = "VeryLazy",
+    config = function()
+      require("neorg").setup {
+        load = {
+          ["core.defaults"] = {},  -- Loads default behaviour
+          ["core.concealer"] = {}, -- Adds pretty icons to your documents
+          ["core.dirman"] = {      -- Manages Neorg workspaces
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+            },
+          },
+        },
+      }
+    end,
+  },
+
+  -- AI
+  {
+    "supermaven-inc/supermaven-nvim",
+    lazy = true,
+    event = "VeryLazy",
+    config = function()
+      require("supermaven-nvim").setup({})
+    end,
+  },
+  {
+    "nvim-lua/plenary.nvim"
+  },
+  {
+    "windwp/nvim-autopairs",
+  },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    lazy = true,
+    event = "VeryLazy",
+
+    config = function()
+      require("trouble").setup {}
+    end,
+  },
+  {
+    "folke/todo-comments.nvim",
+    lazy = true,
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup {}
+    end,
+    opts = {
+      signs = true,      -- show icons in the signs column
+      sign_priority = 8, -- sign priority
+      -- keywords recognized as todo comments
+      keywords = {
+        FIX = {
+          icon = " ", -- icon used for the sign, and in search results
+          color = "error", -- can be a hex color, or a named color (see below)
+          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+          -- signs = false, -- configure signs for some keywords individually
+        },
+        TODO = { icon = " ", color = "info" },
+        HACK = { icon = " ", color = "warning" },
+        WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+        PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+        NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+        TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+        ERROR = { icon = " ", color = "error", alt = { "ERROR" } },
+      },
+      highlight = {
+        multiline = true,                -- enable multine todo comments
+        multiline_pattern = "^.",        -- lua pattern to match the next multiline from the start of the matched keyword
+        multiline_context = 10,          -- extra lines that will be re-evaluated when changing a line
+        before = "",                     -- "fg" or "bg" or empty
+        keyword = "wide",                -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
+        after = "fg",                    -- "fg" or "bg" or empty
+        pattern = [[.*<(KEYWORDS)\s*:]], -- pattern or table of patterns, used for highlighting (vim regex)
+        comments_only = true,            -- uses treesitter to match keywords in comments only
+        max_line_len = 400,              -- ignore lines longer than this
+        exclude = {},                    -- list of file types to exclude highlighting
+      },
+      -- list of named colors where we try to extract the guifg from the
+      -- list of highlight groups or use the hex color if hl not found as a fallback
+      colors = {
+        error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
+        warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
+        info = { "DiagnosticInfo", "#2563EB" },
+        hint = { "DiagnosticHint", "#10B981" },
+        default = { "Identifier", "#7C3AED" },
+        test = { "Identifier", "#FF00FF" }
+      },
+    }
+  },
   {
     "akinsho/flutter-tools.nvim",
     lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
-    },
-    lsp = {
-      servers = {
-        "dartls",
-      },
-      setup_handlers = {
-        -- add custom handler
-        dartls = function(_, opts)
-          require("flutter-tools").setup { lsp = opts }
-        end,
-      },
-      config = {
-        dartls = {
-          -- any changes you want to make to the LSP setup, for example
-          color = {
-            enabled = true,
-          },
-          settings = {
-            showTodos = true,
-            completeFunctionCalls = true,
-          },
-        },
-      },
     },
   },
   {
@@ -81,27 +206,6 @@ local plugins = {
       }
     end,
   },
-  -- {
-  --   lazy = true,
-  --   event = "VeryLazy",
-  --   "kevinhwang91/nvim-ufo",
-  --   dependencies = { "kevinhwang91/promise-async" },
-  --   opts = {
-  --     filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
-  --   },
-  --   config = function(_, opts)
-  --     vim.api.nvim_create_autocmd("FileType", {
-  --       group = vim.api.nvim_create_augroup("local_detach_ufo", { clear = true }),
-  --       pattern = opts.filetype_exclude,
-  --       callback = function()
-  --         require("ufo").detach()
-  --       end,
-  --     })
-  --
-  --     vim.opt.foldlevelstart = 99
-  --     require("ufo").setup(opts)
-  --   end,
-  -- },
   {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -138,6 +242,8 @@ local plugins = {
         "vue-language-server",
         "tailwindcss-language-server",
         "typescript-language-server",
+        "volar",
+        "svelte-language-server",
       },
     },
   },
@@ -177,7 +283,40 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
-  --
+
+  -- NOTE: example rendering local plugin
+  --:Lazy reload pomodoro.nvim (to reload the plugin)
+  -- {
+  --   dir = "~/Documents/personal/beastie.nvim",
+  --   name = "beastie.nvim",
+  --   lazy = false, -- needed so the pomodoro can start at launch
+  --   opts = {
+  --     beasties = {
+  --       {
+  --         name = "cat",
+  --         frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
+  --       },
+  --       {
+  --         name = "dog",
+  --         frames = { "🐶", "🐕", "🦮", "🐕" }
+  --       },
+  --       {
+  --         name = "bird",
+  --         frames = { "🐦", "🐤", "🐧", "🦜" }
+  --       }
+  --     },
+  --     start_at_launch = true,
+  --     animation_speed = 200, -- ms
+  --     active_beastie = 2,
+  --   },
+  -- },
+  -- {
+  --   dir = "~/Documents/personal/enviread.nvim",
+  --   name = "enviread.nvim",
+  --   lazy = false, -- needed so the pomodoro can start at launch
+  --   opts = {
+  --   },
+  -- },
 }
 
 return plugins

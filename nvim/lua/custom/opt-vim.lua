@@ -9,6 +9,7 @@ vim.opt.path:append "**"
 vim.opt.wildignorecase = true
 vim.opt.wildignore:append "*/node_modules/"
 vim.opt.wildignore:append "*/.git/"
+
 -- yank highlight
 vim.api.nvim_exec(
   [[
@@ -20,3 +21,18 @@ vim.api.nvim_exec(
   false
 )
 -- vim.builtin.treesitter.autotag.enable = true
+-- local autocmd = vim.api.nvim_create_autocmd
+--
+-- autocmd({ "FileType" }, {
+--   pattern = { "javascriptreact", "typescriptreact", "tsx", "jsx" },
+--   callback = function()
+--     vim.bo.commentstring = "{/* %s */}"
+--   end
+-- })
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = { "javascriptreact", "typescriptreact", "tsx", "jsx" },
+--   callback = function()
+--     vim.bo.commentstring = "{/* %s */}"
+--     print("Commentstring set for React file: " .. vim.bo.commentstring)
+--   end
+-- })

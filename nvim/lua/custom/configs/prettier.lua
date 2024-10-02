@@ -9,6 +9,9 @@ local M = {
     vue = {
       require("formatter.filetypes.vue").prettier,
     },
+    svelte = {
+      require("formatter.filetypes.svelte").prettier,
+    },
     -- ["*"] = {
     --   require("formatter.filetypes.any").remove_trailing_whitespace
     -- }

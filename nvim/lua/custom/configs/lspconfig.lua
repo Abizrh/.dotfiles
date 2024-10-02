@@ -18,7 +18,9 @@ local servers = {
   "intelephense",
   "gopls",
   "marksman",
-  "dartls",
+  "svelte"
+  -- "markdown",
+  -- "dartls",
 }
 
 capabilities.textDocument.foldingRange = {
@@ -46,7 +48,18 @@ for _, server in pairs(servers) do
     capabilities = capabilities,
   }
 end
--- require"lspconfig".vuels.setup{
---   on_attach = on_attach,
---   capabilities = capabilities
--- }
+require "lspconfig".volar.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+require "lspconfig".lua_ls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
+      }
+    }
+  }
+}
