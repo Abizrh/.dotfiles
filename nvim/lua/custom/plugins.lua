@@ -1,27 +1,53 @@
 local plugins = {
   -- UI
+  -- {
+  --   "Abizrh/beastie.nvim",
+  --   lazy = false, -- needed so the beastie can start at launch
+  --   opts = {
+  --     beasties = {
+  --       {
+  --         name = "cat",
+  --         frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
+  --       },
+  --       {
+  --         name = "love",
+  --         frames = { "❤️", "💛", "💚", "💙", "💜", "💓", "💘" }
+  --       },
+  --       {
+  --         name = "fairy",
+  --         frames = { "🧚", "🧚", "🧚", "🧚", "🧚", "🧚", "🧚" }
+  --       },
+  --       {
+  --         name = "bug",
+  --         frames = { "🪲" }
+  --       }
+  --     },
+  --     start_at_launch = false,
+  --     animation_speed = 200, -- ms
+  --     active_beastie = "cat",
+  --     animation = "random",  -- or "random"
+  --   },
+  -- },
+
   {
-    "Abizrh/beastie.nvim",
-    lazy = false, -- needed so the beastie can start at launch
-    opts = {
-      beasties = {
-        {
-          name = "cat",
-          frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
-        },
-        {
-          name = "love",
-          frames = { "❤️", "💛", "💚", "💙", "💜", "💓", "💘" }
-        },
-        {
-          name = "fairy",
-          frames = { "🧚", "🧚", "🧚", "🧚", "🧚", "🧚", "🧚" }
-        }
-      },
-      start_at_launch = true,
-      animation_speed = 180, -- ms
-      active_beastie = 1,
+    "Abizrh/iisca.nvim"
+  },
+  {
+    "sphamba/smear-cursor.nvim",
+    opts = {},
+    lazy = false,
+  },
+  {
+    "luckasRanarison/tailwind-tools.nvim",
+    lazy = false, -- needed so the pomodoro can start at launch
+    name = "tailwind-tools",
+    build = ":UpdateRemotePlugins",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim", -- optional
+      "neovim/nvim-lspconfig",         -- optional
     },
+    opts = {}                          -- your configuration
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -183,30 +209,6 @@ local plugins = {
     event = "VeryLazy",
   },
   {
-    "edluffy/hologram.nvim",
-    config = function()
-      require("hologram").setup {
-        auto_display = true,
-      }
-    end,
-    disable = true,
-  },
-  {
-    "samodostal/image.nvim",
-    config = function()
-      require("image").setup {
-        render = {
-          min_padding = 5,
-          show_label = true,
-          use_dither = true,
-        },
-        events = {
-          update_on_nvim_resize = true,
-        },
-      }
-    end,
-  },
-  {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
@@ -283,40 +285,61 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
+  {
+    "chrisgrieser/nvim-tinygit",
+    lazy = false,
+    config = function()
+      require "custom.configs.tinygit"
+    end,
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "nvim-telescope/telescope.nvim", -- optional, but recommended
+      "rcarriga/nvim-notify",          -- optional, but recommended
+    },
+  },
 
   -- NOTE: example rendering local plugin
-  --:Lazy reload pomodoro.nvim (to reload the plugin)
-  -- {
-  --   dir = "~/Documents/personal/beastie.nvim",
-  --   name = "beastie.nvim",
-  --   lazy = false, -- needed so the pomodoro can start at launch
-  --   opts = {
-  --     beasties = {
-  --       {
-  --         name = "cat",
-  --         frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
-  --       },
-  --       {
-  --         name = "dog",
-  --         frames = { "🐶", "🐕", "🦮", "🐕" }
-  --       },
-  --       {
-  --         name = "bird",
-  --         frames = { "🐦", "🐤", "🐧", "🦜" }
-  --       }
-  --     },
-  --     start_at_launch = true,
-  --     animation_speed = 200, -- ms
-  --     active_beastie = 2,
-  --   },
-  -- },
-  -- {
-  --   dir = "~/Documents/personal/enviread.nvim",
-  --   name = "enviread.nvim",
-  --   lazy = false, -- needed so the pomodoro can start at launch
-  --   opts = {
-  --   },
-  -- },
+  --:Lazy reload [plugin-module] (to reload the plugin)
+  {
+    dir = "~/Documents/personal/neovim-plugin/beastie.nvim/",
+    name = "beastie.nvim",
+    lazy = false, -- needed so the beastie can start at launch
+    opts = {
+      beasties = {
+        {
+          name = "cat",
+          frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
+        },
+        {
+          name = "love",
+          frames = { "❤️", "💛", "💚", "💙", "💜", "💓", "💘" }
+        },
+        {
+          name = "fairy",
+          frames = { "🧚", "🧚", "🧚", "🧚", "🧚", "🧚", "🧚" }
+        },
+        {
+          name = "bug",
+          frames = { "🪲" }
+        }
+      },
+      start_at_launch = false,
+      animation_speed = 100, -- ms
+      active_beastie = "cat",
+      animation = "random",  -- or "random"
+    },
+    -- dependencies = {
+    --   'hrsh7th/nvim-cmp',
+    --   'nvim-telescope/telescope.nvim',
+    -- },
+    -- config = function()
+    --   require('cmp').setup({
+    --     sources = {
+    --       { name = 'icons' }
+    --     }
+    --   })
+    -- end
+  },
 }
 
 return plugins

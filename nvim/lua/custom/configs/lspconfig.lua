@@ -30,7 +30,7 @@ capabilities.textDocument.foldingRange = {
 -- local lspconfig = require "lspconfig"
 local util = require "lspconfig/util"
 
-require("lspconfig").tsserver.setup {
+require("lspconfig").ts_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", "tsconfig.node.json"),
@@ -48,6 +48,7 @@ for _, server in pairs(servers) do
     capabilities = capabilities,
   }
 end
+
 require "lspconfig".volar.setup {
   on_attach = on_attach,
   capabilities = capabilities

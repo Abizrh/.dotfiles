@@ -1,7 +1,7 @@
----@type ChadrcConfig
+---@class ChadrcConfig
 local M = {}
 
-M.ui = { 
+M.ui = {
   theme = 'bearded-arc',
   transparency = true,
   nvdash = {
@@ -21,7 +21,7 @@ M.ui = {
       opts = {
         position = "center",
         hl = "AlphaHeader",
-    },
+      },
     },
 
 
