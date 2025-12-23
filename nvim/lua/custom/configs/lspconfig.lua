@@ -18,9 +18,9 @@ local servers = {
   "intelephense",
   "gopls",
   "marksman",
-  "svelte"
-  -- "markdown",
-  -- "dartls",
+  "svelte",
+  "clangd",
+  "omnisharp",
 }
 
 capabilities.textDocument.foldingRange = {
@@ -63,4 +63,24 @@ require "lspconfig".lua_ls.setup {
       }
     }
   }
+}
+
+-- C#
+require("lspconfig").omnisharp.setup {
+cmd = {
+    vim.fn.stdpath("data") .. "/mason/bin/OmniSharp",
+    "--languageserver",
+    "--hostPID",
+    tostring(vim.fn.getpid()),
+  },
+
+  filetypes = { "cs", "vb" },
+
+  root_dir = util.root_pattern("*.sln", "*.csproj", ".git"),
+
+  enable_editorconfig_support = true,
+  enable_ms_build_load_projects_on_demand = false,
+  enable_roslyn_analyzers = true,
+  organize_imports_on_format = true,
+  enable_import_completion = true,
 }

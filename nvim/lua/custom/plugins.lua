@@ -30,7 +30,34 @@ local plugins = {
   -- },
 
   {
-    "Abizrh/iisca.nvim"
+    'Abizrh/commit-ai.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+    lazy = false,
+    config = function()
+      require('commit-ai').setup {
+        icons = false,
+        language = 'en', -- default language
+        -- unopiniated commit conventions
+        git_conventions = {
+          docs = { icon = "📖", prefix = "docs", type = "Documentation changes" },
+          fix = { icon = "🐛", prefix = "fix", type = "Bug fix" },
+          feat = { icon = "✨", prefix = "feat", type = "New feature" },
+          enhance = { icon = "⚡", prefix = "enhance", type = "Enhancement" },
+          chore = { icon = "🧹", prefix = "chore", type = "Chore" },
+          refactor = { icon = "⚠️", prefix = "refactor", type = "Breaking change" }
+        },
+        provider_options = {
+          gemini = {
+            model = 'gemini-2.0-flash',
+            api_key = vim.env.GEMINI_API_KEY, -- assuming you have set GEMINI_API_KEY in .zshrc or .bashrc
+            stream = false,
+          },
+        }
+      }
+    end,
   },
   {
     "sphamba/smear-cursor.nvim",
@@ -246,6 +273,7 @@ local plugins = {
         "typescript-language-server",
         "volar",
         "svelte-language-server",
+        "csharp-language-server",
       },
     },
   },
@@ -285,61 +313,61 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
-  {
-    "chrisgrieser/nvim-tinygit",
-    lazy = false,
-    config = function()
-      require "custom.configs.tinygit"
-    end,
-    dependencies = {
-      "stevearc/dressing.nvim",
-      "nvim-telescope/telescope.nvim", -- optional, but recommended
-      "rcarriga/nvim-notify",          -- optional, but recommended
-    },
-  },
+  -- {
+  --   "chrisgrieser/nvim-tinygit",
+  --   lazy = false,
+  --   config = function()
+  --     require "custom.configs.tinygit"
+  --   end,
+  --   dependencies = {
+  --     "stevearc/dressing.nvim",
+  --     "nvim-telescope/telescope.nvim", -- optional, but recommended
+  --     "rcarriga/nvim-notify",          -- optional, but recommended
+  --   },
+  -- },
 
   -- NOTE: example rendering local plugin
   --:Lazy reload [plugin-module] (to reload the plugin)
-  {
-    dir = "~/Documents/personal/neovim-plugin/beastie.nvim/",
-    name = "beastie.nvim",
-    lazy = false, -- needed so the beastie can start at launch
-    opts = {
-      beasties = {
-        {
-          name = "cat",
-          frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
-        },
-        {
-          name = "love",
-          frames = { "❤️", "💛", "💚", "💙", "💜", "💓", "💘" }
-        },
-        {
-          name = "fairy",
-          frames = { "🧚", "🧚", "🧚", "🧚", "🧚", "🧚", "🧚" }
-        },
-        {
-          name = "bug",
-          frames = { "🪲" }
-        }
-      },
-      start_at_launch = false,
-      animation_speed = 100, -- ms
-      active_beastie = "cat",
-      animation = "random",  -- or "random"
-    },
-    -- dependencies = {
-    --   'hrsh7th/nvim-cmp',
-    --   'nvim-telescope/telescope.nvim',
-    -- },
-    -- config = function()
-    --   require('cmp').setup({
-    --     sources = {
-    --       { name = 'icons' }
-    --     }
-    --   })
-    -- end
-  },
+  -- {
+  --   dir = "~/Documents/personal/neovim-plugin/beastie.nvim/",
+  --   name = "beastie.nvim",
+  --   lazy = false, -- needed so the beastie can start at launch
+  --   opts = {
+  --     beasties = {
+  --       {
+  --         name = "cat",
+  --         frames = { "🐱", "😺", "😸", "😹", "😼", "😽" }
+  --       },
+  --       {
+  --         name = "love",
+  --         frames = { "❤️", "💛", "💚", "💙", "💜", "💓", "💘" }
+  --       },
+  --       {
+  --         name = "fairy",
+  --         frames = { "🧚", "🧚", "🧚", "🧚", "🧚", "🧚", "🧚" }
+  --       },
+  --       {
+  --         name = "bug",
+  --         frames = { "🪲" }
+  --       }
+  --     },
+  --     start_at_launch = false,
+  --     animation_speed = 100, -- ms
+  --     active_beastie = "cat",
+  --     animation = "random",  -- or "random"
+  --   },
+  --   -- dependencies = {
+  --   --   'hrsh7th/nvim-cmp',
+  --   --   'nvim-telescope/telescope.nvim',
+  --   -- },
+  --   -- config = function()
+  --   --   require('cmp').setup({
+  --   --     sources = {
+  --   --       { name = 'icons' }
+  --   --     }
+  --   --   })
+  --   -- end
+  -- },
 }
 
 return plugins

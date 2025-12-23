@@ -2,7 +2,7 @@
 local M = {}
 
 M.ui = {
-  theme = 'bearded-arc',
+  theme = 'tokyonight',
   transparency = true,
   nvdash = {
     load_on_startup = true,
