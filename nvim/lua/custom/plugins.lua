@@ -274,6 +274,7 @@ local plugins = {
         "volar",
         "svelte-language-server",
         "csharp-language-server",
+        "jdtls",
       },
     },
   },
@@ -312,6 +313,10 @@ local plugins = {
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    lazy = true,
   },
   -- {
   --   "chrisgrieser/nvim-tinygit",

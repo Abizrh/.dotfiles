@@ -1,6 +1,7 @@
 local config = require "plugins.configs.lspconfig"
 local on_attach = config.on_attach
 local capabilities = config.capabilities
+local home = os.getenv("HOME")
 
 -- local lspconfig = require"lspconfig"
 
@@ -21,6 +22,7 @@ local servers = {
   "svelte",
   "clangd",
   "omnisharp",
+  "jdtls",
 }
 
 capabilities.textDocument.foldingRange = {
@@ -83,4 +85,16 @@ cmd = {
   enable_roslyn_analyzers = true,
   organize_imports_on_format = true,
   enable_import_completion = true,
+}
+
+
+-- Java
+require("lspconfig").jdtls.setup {
+  on_attach = on_attach,
+  cmd = {
+    home .. "/.local/share/nvim/mason/packages/jdtls/bin/jdtls",
+    "-data",
+    home .. "/.cache/jdtls/" .. vim.fn.fnamemodify(root_dir, ":p:h:t"),
+  },
+
 }
