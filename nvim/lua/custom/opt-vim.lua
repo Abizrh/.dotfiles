@@ -10,6 +10,10 @@ vim.opt.wildignorecase = true
 vim.opt.wildignore:append "*/node_modules/"
 vim.opt.wildignore:append "*/.git/"
 
+-- Wrap lines
+vim.opt.wrap = true
+vim.opt.linebreak = true
+
 
 -- yank highlight
 vim.api.nvim_exec(
