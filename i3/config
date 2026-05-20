@@ -1,0 +1,23 @@
+set $mod Mod4
+
+font pango:monospace 10
+
+exec --no-startup-id picom
+exec --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
+
+bindsym $mod+Return exec alacritty
+bindsym $mod+d exec rofi -show drun
+bindsym $mod+Shift+q kill
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exit
